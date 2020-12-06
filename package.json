@@ -1,10 +1,10 @@
 {
-  "name": "@paulrberg/solidity-template",
-  "description": "Setup for writing Solidity smart contracts",
+  "name": "@tomfrench/balancer-pool-deployer",
+  "description": "Contract for one-transaction-deployment of Balancer pools",
   "version": "1.0.0",
   "author": {
-    "name": "Paul Razvan Berg",
-    "url": "https://paulrberg.com"
+    "name": "Tom French",
+    "url": "https://github.com/tomafrench"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
@@ -52,11 +52,11 @@
   "keywords": [
     "blockchain",
     "ethereum",
-    "hardhat",
+    "balancer",
     "smart-contracts",
     "solidity"
   ],
-  "license": "WTFPL",
+  "license": "GPL-3.0-only",
   "publishConfig": {
     "access": "public"
   },

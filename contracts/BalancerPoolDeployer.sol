@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 pragma solidity ^0.7.5;
 pragma abicoder v2;
@@ -7,6 +7,14 @@ import "hardhat/console.sol";
 
 import {BFactory, BPool, ConfigurableRightsPool, CRPFactory, ERC20, RightsManager} from "./BalancerContracts.sol";
 
+
+/**
+ * @title Balancer Pool Deployer
+ * @author Tom French
+ * @notice This contract allows single transaction deployment of Balancer pools (both standard and smart)
+ * @dev Implementation is taken from the Balancer BActions contract, adding pool ownership transfer to msg.sender
+ *      See: https://github.com/balancer-labs/bactions-proxy/blob/c4a2f6071bbe09388beae5a1256f116362f44395/contracts/BActions.sol
+ */
 contract BalancerPoolDeployer {
 
     function create(
