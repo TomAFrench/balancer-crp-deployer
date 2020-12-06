@@ -3,8 +3,7 @@
 pragma solidity ^0.7.5;
 pragma abicoder v2;
 
-import {BFactory, BPool, ConfigurableRightsPool, CRPFactory, ERC20, RightsManager} from "./BalancerContracts.sol";
-
+import { BFactory, BPool, ConfigurableRightsPool, CRPFactory, ERC20, RightsManager } from "./BalancerContracts.sol";
 
 /**
  * @title Balancer Pool Deployer
@@ -14,13 +13,12 @@ import {BFactory, BPool, ConfigurableRightsPool, CRPFactory, ERC20, RightsManage
  *      See: https://github.com/balancer-labs/bactions-proxy/blob/c4a2f6071bbe09388beae5a1256f116362f44395/contracts/BActions.sol
  */
 contract BalancerPoolDeployer {
-
     function create(
         BFactory factory,
         address[] calldata tokens,
-        uint[] calldata balances,
-        uint[] calldata weights,
-        uint swapFee,
+        uint256[] calldata balances,
+        uint256[] calldata weights,
+        uint256 swapFee,
         bool finalize
     ) external returns (BPool pool) {
         require(tokens.length == balances.length, "ERR_LENGTH_MISMATCH");
@@ -30,7 +28,7 @@ contract BalancerPoolDeployer {
         pool.setSwapFee(swapFee);
 
         // Pull in initial balances of tokens and bind them to pool
-        for (uint i = 0; i < tokens.length; i++) {
+        for (uint256 i = 0; i < tokens.length; i++) {
             ERC20 token = ERC20(tokens[i]);
             require(token.transferFrom(msg.sender, address(this), balances[i]), "ERR_TRANSFER_FAILED");
             token.approve(address(pool), balances[i]);
@@ -48,7 +46,7 @@ contract BalancerPoolDeployer {
         // Set msg.sender to be controller of newly created pool
         pool.setController(msg.sender);
     }
-    
+
     function createSmartPool(
         CRPFactory factory,
         BFactory bFactory,
@@ -56,32 +54,19 @@ contract BalancerPoolDeployer {
         ConfigurableRightsPool.CrpParams calldata crpParams,
         RightsManager.Rights calldata rights
     ) external returns (ConfigurableRightsPool crp) {
-        require(
-            poolParams.constituentTokens.length == poolParams.tokenBalances.length,
-            "ERR_LENGTH_MISMATCH"
-        );
-        require(
-            poolParams.constituentTokens.length == poolParams.tokenWeights.length,
-            "ERR_LENGTH_MISMATCH"
-        );
+        require(poolParams.constituentTokens.length == poolParams.tokenBalances.length, "ERR_LENGTH_MISMATCH");
+        require(poolParams.constituentTokens.length == poolParams.tokenWeights.length, "ERR_LENGTH_MISMATCH");
 
         // Deploy the CRP controller contract
-        crp = factory.newCrp(
-            address(bFactory),
-            poolParams,
-            rights
-        );
-        
+        crp = factory.newCrp(address(bFactory), poolParams, rights);
+
         // Pull in initial balances of tokens for CRP
-        for (uint i = 0; i < poolParams.constituentTokens.length; i++) {
+        for (uint256 i = 0; i < poolParams.constituentTokens.length; i++) {
             ERC20 token = ERC20(poolParams.constituentTokens[i]);
-            require(
-                token.transferFrom(msg.sender, address(this), poolParams.tokenBalances[i]),
-                "ERR_TRANSFER_FAILED"
-            );
+            require(token.transferFrom(msg.sender, address(this), poolParams.tokenBalances[i]), "ERR_TRANSFER_FAILED");
             token.approve(address(crp), poolParams.tokenBalances[i]);
         }
-        
+
         // Deploy the underlying BPool
         crp.createPool(
             crpParams.initialSupply,

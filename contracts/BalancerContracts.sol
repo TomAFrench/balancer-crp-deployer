@@ -15,11 +15,19 @@ library RightsManager {
 }
 
 abstract contract ERC20 {
-    function approve(address spender, uint amount) external virtual returns (bool);
-    function transfer(address dst, uint amt) external virtual returns (bool);
-    function transferFrom(address sender, address recipient, uint amount) external virtual returns (bool);
-    function balanceOf(address whom) external view virtual returns (uint);
-    function allowance(address, address) external view virtual returns (uint);
+    function approve(address spender, uint256 amount) external virtual returns (bool);
+
+    function transfer(address dst, uint256 amt) external virtual returns (bool);
+
+    function transferFrom(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) external virtual returns (bool);
+
+    function balanceOf(address whom) external view virtual returns (uint256);
+
+    function allowance(address, address) external view virtual returns (uint256);
 }
 
 abstract contract BalancerOwnable {
@@ -27,24 +35,43 @@ abstract contract BalancerOwnable {
 }
 
 abstract contract AbstractPool is ERC20, BalancerOwnable {
-    function setSwapFee(uint swapFee) external virtual;
+    function setSwapFee(uint256 swapFee) external virtual;
+
     function setPublicSwap(bool public_) external virtual;
-    
-    function joinPool(uint poolAmountOut, uint[] calldata maxAmountsIn) external virtual;
+
+    function joinPool(uint256 poolAmountOut, uint256[] calldata maxAmountsIn) external virtual;
+
     function joinswapExternAmountIn(
-        address tokenIn, uint tokenAmountIn, uint minPoolAmountOut
-    ) external virtual returns (uint poolAmountOut);
+        address tokenIn,
+        uint256 tokenAmountIn,
+        uint256 minPoolAmountOut
+    ) external virtual returns (uint256 poolAmountOut);
 }
 
 abstract contract BPool is AbstractPool {
     function finalize() external virtual;
-    function bind(address token, uint balance, uint denorm) external virtual;
-    function rebind(address token, uint balance, uint denorm) external virtual;
+
+    function bind(
+        address token,
+        uint256 balance,
+        uint256 denorm
+    ) external virtual;
+
+    function rebind(
+        address token,
+        uint256 balance,
+        uint256 denorm
+    ) external virtual;
+
     function unbind(address token) external virtual;
+
     function isBound(address t) external view virtual returns (bool);
+
     function getCurrentTokens() external view virtual returns (address[] memory);
-    function getFinalTokens() external view virtual returns(address[] memory);
-    function getBalance(address token) external view virtual returns (uint);
+
+    function getFinalTokens() external view virtual returns (address[] memory);
+
+    function getBalance(address token) external view virtual returns (uint256);
 }
 
 abstract contract BFactory {
@@ -56,31 +83,49 @@ abstract contract ConfigurableRightsPool is AbstractPool {
         string poolTokenSymbol;
         string poolTokenName;
         address[] constituentTokens;
-        uint[] tokenBalances;
-        uint[] tokenWeights;
-        uint swapFee;
+        uint256[] tokenBalances;
+        uint256[] tokenWeights;
+        uint256 swapFee;
     }
 
     struct CrpParams {
-        uint initialSupply;
-        uint minimumWeightChangeBlockPeriod;
-        uint addTokenTimeLockInBlocks;
+        uint256 initialSupply;
+        uint256 minimumWeightChangeBlockPeriod;
+        uint256 addTokenTimeLockInBlocks;
     }
 
     function createPool(
-        uint initialSupply, uint minimumWeightChangeBlockPeriod, uint addTokenTimeLockInBlocks
+        uint256 initialSupply,
+        uint256 minimumWeightChangeBlockPeriod,
+        uint256 addTokenTimeLockInBlocks
     ) external virtual;
-    function createPool(uint initialSupply) external virtual;
-    function setCap(uint newCap) external virtual;
-    function updateWeight(address token, uint newWeight) external virtual;
+
+    function createPool(uint256 initialSupply) external virtual;
+
+    function setCap(uint256 newCap) external virtual;
+
+    function updateWeight(address token, uint256 newWeight) external virtual;
+
     function updateWeightsGradually(
-        uint[] calldata newWeights, uint startBlock, uint endBlock
+        uint256[] calldata newWeights,
+        uint256 startBlock,
+        uint256 endBlock
     ) external virtual;
-    function commitAddToken(address token, uint balance, uint denormalizedWeight) external virtual;
+
+    function commitAddToken(
+        address token,
+        uint256 balance,
+        uint256 denormalizedWeight
+    ) external virtual;
+
     function applyAddToken() external virtual;
+
     function removeToken(address token) external virtual;
+
     function whitelistLiquidityProvider(address provider) external virtual;
+
     function removeWhitelistedLiquidityProvider(address provider) external virtual;
+
     function bPool() external view virtual returns (BPool);
 }
 

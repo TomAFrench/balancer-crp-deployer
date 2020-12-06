@@ -5,7 +5,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
 
   const { deployer } = await getNamedAccounts();
- 
 
   await deployments.deploy("BalancerPoolDeployer", {
     from: deployer,
