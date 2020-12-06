@@ -3,8 +3,6 @@
 pragma solidity ^0.7.5;
 pragma abicoder v2;
 
-import "hardhat/console.sol";
-
 import {BFactory, BPool, ConfigurableRightsPool, CRPFactory, ERC20, RightsManager} from "./BalancerContracts.sol";
 
 
