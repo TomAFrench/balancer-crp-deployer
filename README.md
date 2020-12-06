@@ -6,7 +6,7 @@ The contract's implementation is identical to the BActions contract while transf
 
 ## Usage
 
-### Pre Requisites
+### Prerequisites
 
 Before running any command, make sure to install dependencies:
 
