@@ -54,7 +54,7 @@ function createTestnetConfig(network: keyof typeof chainIds): NetworkUserConfig 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   namedAccounts: {
-    admin: 0,
+    deployer: 0,
   },
   networks: {
     hardhat: {
@@ -72,7 +72,7 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   solidity: {
-    version: "0.7.4",
+    version: "0.7.5",
     settings: {
       // https://hardhat.org/hardhat-network/#solidity-optimizer-support
       optimizer: {

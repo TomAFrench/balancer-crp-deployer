@@ -4,12 +4,11 @@ import { DeployFunction } from "hardhat-deploy/types";
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
 
-  const { admin } = await getNamedAccounts();
-  const greeting: string = "Hello, world!";
+  const { deployer } = await getNamedAccounts();
+ 
 
-  await deployments.deploy("Greeter", {
-    from: admin,
-    args: [greeting],
+  await deployments.deploy("BalancerPoolDeployer", {
+    from: deployer,
     log: true,
   });
 };

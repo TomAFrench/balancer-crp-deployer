@@ -1,9 +1,9 @@
 import { Signer } from "@ethersproject/abstract-signer";
 
 export interface Accounts {
-  admin: string;
+  deployer: string;
 }
 
 export interface Signers {
-  admin: Signer;
+  deployer: Signer;
 }
